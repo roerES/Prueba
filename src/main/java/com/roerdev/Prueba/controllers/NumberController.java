@@ -22,7 +22,11 @@ public class NumberController {
     @PostMapping(value = "/addValue")
     public ResponseEntity<?> addValue(HttpServletRequest request) {
         String value = request.getParameter("value");
-        this.numberService.addNumber(value);
+        try {
+            this.numberService.addNumber(value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return new ResponseEntity<>("Add value succesfull", HttpStatus.OK);
     }
 

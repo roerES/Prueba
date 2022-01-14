@@ -1,5 +1,8 @@
 package com.roerdev.Prueba.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -11,6 +14,8 @@ import java.util.stream.Collectors;
 @Service
 public class NumberServiceImpl implements NumberService{
 
+    private Logger logger = LoggerFactory.getLogger(NumberServiceImpl.class);
+
     private final ExecutorService executor;
 
     private StringBuffer stringBuffer = new StringBuffer();
@@ -20,9 +25,12 @@ public class NumberServiceImpl implements NumberService{
     }
 
     @Override
-    public void addNumber(String value) {
+    @Async("threadPoolExecutor")
+    public void addNumber(String value) throws Exception{
+        logger.info("Agregando valor de: {}", value);
         CompletableFuture<String> futureString = produceFutureString(value);
         futureString.whenComplete((valueFuture, throwable) -> stringBuffer.append(valueFuture));
+        logger.info("{}", futureString.get());
     }
 
     @Override

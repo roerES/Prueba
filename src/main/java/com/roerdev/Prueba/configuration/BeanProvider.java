@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 @Component
 public class BeanProvider {
 
-    @Bean
+    @Bean("threadPoolExecutor")
     @Scope("singleton")
     public ExecutorService executorService() {
         return Executors.newWorkStealingPool(Runtime.getRuntime().availableProcessors());
